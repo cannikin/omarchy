@@ -5,8 +5,10 @@ browser_exec=$(sed -n 's/^Exec=\([^ ]*\).*/\1/p' {~/.local,~/.nix-profile,/usr}/
 
 if [[ $browser_exec =~ (firefox|zen|librewolf) ]]; then
   private_flag="--private-window"
+  scale_flag=""
 else
   private_flag="--incognito"
+  scale_flag="--force-device-scale-factor=${CHROMIUM_SCALE}"
 fi
 
-exec setsid uwsm-app -- "$browser_exec" "${@/--private/$private_flag}"
+exec setsid uwsm app -- "$browser_exec" "${@/--private/$private_flag}" "$scale_flag"
